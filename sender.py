@@ -2,7 +2,7 @@ import binascii
 import socket
 import struct
 import hashlib
-import scapy
+import scapy 
 import sys
 
 hostname = socket.gethostname()
