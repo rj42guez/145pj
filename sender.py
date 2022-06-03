@@ -2,7 +2,6 @@ import binascii
 import socket
 import struct
 import hashlib
-#import scapy
 import sys
 
 def compute_checksum(packet):
