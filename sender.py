@@ -55,14 +55,14 @@ pyld = f.read()
 
 seq = 0
 
-for i in range(0, len(pyld), 10):
+for i in range(0, len(pyld), 20):
 
-	if len(pyld) - i >= 10:
-		pyld_sub = pyld[i:i+10].encode()
+	if len(pyld) - i >= 20:
+		pyld_sub = pyld[i:i+20]
 		z = 0
 
-	elif len(pyld) - i < 10:
-		pyld_sub = pyld[i:].encode()
+	elif len(pyld) - i < 20:
+		pyld_sub = pyld[i:]
 		z = 1
 
 	w = iD
@@ -71,9 +71,10 @@ for i in range(0, len(pyld), 10):
 
 	packet = 'ID{}SN{}TXN{}LAST{}{}'.format(w, x, y, z, pyld_sub)
 
-	print(packet)
-
 	M = encodeMessage(packet)
+
+	print(M)
+
 	udpSocket.sendto(M, (ipR, portR))
 
 	data, addr = udpSocket.recvfrom(4096)
@@ -81,7 +82,8 @@ for i in range(0, len(pyld), 10):
 	if len(data) > 0:
 		print(addr)
 		print(data.decode())
+		cs = compute_checksum(data.decode())
+		print(cs)
 
 	seq += 1
 
-print("hello")
