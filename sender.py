@@ -54,6 +54,7 @@ f = open(path, 'r')
 pyld = f.read()
 pyld_sub = ''
 seq = 0
+z = 0
 
 for i in range(0, len(pyld), 20):
 
