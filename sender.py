@@ -9,7 +9,7 @@ def compute_checksum(packet):
     return hashlib.md5(packet.encode('utf-8')).hexdigest()
 
 def encodeMessage(m):
-    M = m.encode('utf-8')
+    M = m.encode()
     return M
 
 iM = 'ID6d93e931'
@@ -42,7 +42,7 @@ print(M)
 
 udpSocket.sendto(M, (ipR, portR))
 
-data, addr = udpSocket.recvfrom(4096)
+data, addr = udpSocket.recvfrom(1024)
 
 if len(data) > 0:
 	print(addr)
@@ -52,14 +52,16 @@ print(transID)
 
 f = open(path, 'r')
 pyld = f.read()
-
 seq = 0
 
 for i in range(0, len(pyld), 20):
 
 	if len(pyld) - i >= 20:
 		pyld_sub = pyld[i:i+20]
-		z = 0
+		if len(pyld) - i == 20:
+			z = 1
+		else:
+			z = 0
 
 	elif len(pyld) - i < 20:
 		pyld_sub = pyld[i:]
@@ -77,13 +79,11 @@ for i in range(0, len(pyld), 20):
 
 	udpSocket.sendto(M, (ipR, portR))
 
-	data, addr = udpSocket.recvfrom(4096)
+	data, addr = udpSocket.recvfrom(1024)
 
 	if len(data) > 0:
 		print(addr)
 		print(data.decode())
-		cs = compute_checksum(data.decode())
-		print(cs)
 
 	seq += 1
 
