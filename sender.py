@@ -55,16 +55,16 @@ pyld_sub = ''
 seq = 0
 z = 0
 
-for i in range(0, len(pyld), 20):
+for i in range(0, len(pyld), 30):
 
-	if len(pyld) - i >= 20:
-		pyld_sub = pyld[i:i+20]
-		if len(pyld) - i == 20:
+	if len(pyld) - i >= 30:
+		pyld_sub = pyld[i:i+30]
+		if len(pyld) - i == 30:
 			z = 1
 		else:
 			z = 0
 
-	elif len(pyld) - i < 20:
+	elif len(pyld) - i < 30:
 		pyld_sub = pyld[i:]
 		z = 1
 
