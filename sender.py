@@ -65,9 +65,11 @@ first = 1
 t1 = 0
 t2 = 0
 payloadSize = 1
+i = 0
 
-for i in range(0, len(pyld), int(payloadSize)):
+while i < len(pyld):
 
+	# Size of remaining payload is still larger than max payload size; packet to send is not yet the last
 	if len(pyld) - i >= int(payloadSize):
 		pyld_sub = pyld[i:i+int(payloadSize)]
 		if len(pyld) - i == int(payloadSize):
@@ -75,6 +77,7 @@ for i in range(0, len(pyld), int(payloadSize)):
 		else:
 			z = 0
 
+	# Packet to send is the last one
 	elif len(pyld) - i < int(payloadSize):
 		pyld_sub = pyld[i:]
 		z = 1
@@ -99,12 +102,18 @@ for i in range(0, len(pyld), int(payloadSize)):
 		t2 = time.time()
 		Tproc = t2 - t1
 		print(Tproc)
-		first = 0
-		payloadSize = Tproc / 120 * len(pyld) + 3
+		payloadSize = Tproc / 110 * len(pyld)
 
+	print(i, int(payloadSize))
 	if len(data) > 0:
 		print(addr)
 		print(data.decode())
 
 	seq += 1
+
+	if first == 0:
+		i += int(payloadSize)
+	else:
+		i += 1
+		first = 0
 
