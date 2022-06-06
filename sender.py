@@ -3,6 +3,7 @@ import socket
 import struct
 import hashlib
 import sys
+import time
 
 def compute_checksum(packet):
     return hashlib.md5(packet.encode('utf-8')).hexdigest()
@@ -54,6 +55,8 @@ pyld = f.read()
 pyld_sub = ''
 seq = 0
 z = 0
+t1 = 0
+t2 = 0
 
 for i in range(0, len(pyld), 30):
 
@@ -80,7 +83,14 @@ for i in range(0, len(pyld), 30):
 
 	udpSocket.sendto(M, (ipR, portR))
 
+	if first == 1:
+		t1 = time.time()
+
 	data, addr = udpSocket.recvfrom(1024)
+	if first == 1:
+		t2 = time.time()
+		Tproc = t2 - t1
+		print(Tproc)
 
 	if len(data) > 0:
 		print(addr)
