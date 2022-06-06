@@ -5,9 +5,6 @@ import hashlib
 import sys
 import time
 
-def compute_checksum(packet):
-    return hashlib.md5(packet.encode('utf-8')).hexdigest()
-
 def encodeMessage(m):
     M = m.encode()
     return M
@@ -20,8 +17,11 @@ ipR = '10.0.7.141'
 path = ''
 transID = '0'
 
+
+# Set up UDP connection 
 udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
+# Get arguments 
 args = sys.argv
 
 for i in range(len(args)):
@@ -36,38 +36,46 @@ for i in range(len(args)):
         if args[i] == '-i':
                 iD = args[i+1]
 
+# Send intent message to receiver and listen from client port
 M = encodeMessage('ID6d93e931')
 udpSocket.bind(('',portS))
 print(M)
 
 udpSocket.sendto(M, (ipR, portR))
 
+# Receive from server
 data, addr = udpSocket.recvfrom(1024)
 
+# Get transaction number
 if len(data) > 0:
 	print(addr)
 	transID = data.decode()
 
 print(transID)
 
+# Get content/payload from file
 f = open(path, 'r')
 pyld = f.read()
 pyld_sub = ''
 seq = 0
 z = 0
+
+# Initialize values for finding processing time
+first = 1
 t1 = 0
 t2 = 0
+payloadSize = 1
 
-for i in range(0, len(pyld), 30):
+for i in range(0, len(pyld), int(payloadSize)):
 
-	if len(pyld) - i >= 30:
-		pyld_sub = pyld[i:i+30]
-		if len(pyld) - i == 30:
+	if len(pyld) - i >= int(payloadSize):
+		pyld_sub = pyld[i:i+int(payloadSize)]
+		if len(pyld) - i == int(payloadSize):
 			z = 1
 		else:
 			z = 0
 
-	elif len(pyld) - i < 30:
+	elif len(pyld) - i < int(payloadSize):
 		pyld_sub = pyld[i:]
 		z = 1
 
@@ -91,6 +99,8 @@ for i in range(0, len(pyld), 30):
 		t2 = time.time()
 		Tproc = t2 - t1
 		print(Tproc)
+		first = 0
+		payloadSize = Tproc / 120 * len(pyld) 
 
 	if len(data) > 0:
 		print(addr)
