@@ -100,7 +100,7 @@ for i in range(0, len(pyld), int(payloadSize)):
 		Tproc = t2 - t1
 		print(Tproc)
 		first = 0
-		payloadSize = Tproc / 120 * len(pyld) 
+		payloadSize = Tproc / 120 * len(pyld) + 3
 
 	if len(data) > 0:
 		print(addr)
