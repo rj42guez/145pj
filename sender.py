@@ -102,7 +102,7 @@ while i < len(pyld):
 		t2 = time.time()
 		Tproc = t2 - t1
 		print(Tproc)
-		payloadSize = Tproc / 110 * len(pyld)
+		payloadSize = Tproc / 100 * (len(pyld)-1)
 
 	print(i, int(payloadSize))
 	if len(data) > 0:
