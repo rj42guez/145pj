@@ -97,7 +97,7 @@ while i < len(pyld):
 		t2 = time.time()
 		Tproc = t2 - t1
 		print("\nComputed processing time: ", Tproc)
-		payloadSize = Tproc / 100 * (len(pyld)-1)
+		payloadSize = Tproc / (100-Tproc) * (len(pyld)-1)
 		print("Computed payload size: ", payloadSize, "\n")
 
 	# Print acknowledgment for most recently sent packet
