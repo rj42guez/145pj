@@ -34,7 +34,7 @@ for i in range(len(args)):
                 iD = args[i+1]
 
 # Send intent message to receiver and listen from client port
-M = encodeMessage('ID6d93e931')
+M = encodeMessage(iM)
 udpSocket.bind(('',portS))
 
 udpSocket.sendto(M, (ipR, portR))
@@ -43,8 +43,8 @@ udpSocket.sendto(M, (ipR, portR))
 data, addr = udpSocket.recvfrom(1024)
 
 # Get transaction number
-if len(data) > 0:
-	transID = data.decode()
+
+transID = data.decode()
 
 print("Transaction Number: ", transID)
 
@@ -100,8 +100,8 @@ while i < len(pyld):
 		print("Computed payload size: ", payloadSize, "\n")
 
 	# Print acknowledgment for most recently sent packet
-	if len(data) > 0:
-		print(Tproc, " -- Acknowledg. for last packet sent: ", data.decode())
+
+	print(Tproc, " -- Acknowledg. for last packet sent: ", data.decode())
 
 	seq += 1
 
