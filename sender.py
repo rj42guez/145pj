@@ -1,7 +1,4 @@
-import binascii
 import socket
-import struct
-import hashlib
 import sys
 import time
 
