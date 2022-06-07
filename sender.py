@@ -6,6 +6,7 @@ def encodeMessage(m):
     M = m.encode()
     return M
 
+# Initialize values 
 iM = 'ID6d93e931'
 iD = ''
 portS = 6734
@@ -14,11 +15,10 @@ ipR = '10.0.7.141'
 path = ''
 transID = '0'
 
-
-# Set up UDP connection 
+# Set up UDP connection
 udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-# Get arguments 
+# Get arguments
 args = sys.argv
 
 for i in range(len(args)):
@@ -64,16 +64,14 @@ i = 0
 
 while i < len(pyld):
 
-	# Size of remaining payload is still larger than max payload size; packet to send is not yet the last
-	if len(pyld) - i >= int(payloadSize):
+	# Size of remaining payload is greater than max payload size
+	if len(pyld) - i > int(payloadSize):
 		pyld_sub = pyld[i:i+int(payloadSize)]
-		if len(pyld) - i == int(payloadSize):
-			z = 1
-		else:
-			z = 0
+		z = 0
 
 	# Packet to send is the last one
-	elif len(pyld) - i < int(payloadSize):
+	elif len(pyld) - i <= int(payloadSize):
+		print("Last packet.")
 		pyld_sub = pyld[i:]
 		z = 1
 
@@ -81,11 +79,11 @@ while i < len(pyld):
 	x = '{0:07d}'.format(seq)
 	y = transID
 
+	# Format of packet
 	packet = 'ID{}SN{}TXN{}LAST{}{}'.format(w, x, y, z, pyld_sub)
 
 	M = encodeMessage(packet)
-
-	print("Packet to send: ", M)
+	print(seq+1, "-Packet to send: ", M)
 
 	udpSocket.sendto(M, (ipR, portR))
 
@@ -93,15 +91,18 @@ while i < len(pyld):
 		t1 = time.time()
 
 	data, addr = udpSocket.recvfrom(1024)
+
+	# Compute for processing time and estimated payload size
 	if first == 1:
 		t2 = time.time()
 		Tproc = t2 - t1
 		print("\nComputed processing time: ", Tproc)
 		payloadSize = Tproc / 100 * (len(pyld)-1)
-		print("\nComputed payload size: ", payloadSize)
+		print("Computed payload size: ", payloadSize, "\n")
 
+	# Print acknowledgment for most recently sent packet
 	if len(data) > 0:
-		print("Acknowledg. for last packet sent:  ", data.decode())
+		print("Acknowledg. for last packet sent: ", data.decode())
 
 	seq += 1
 
