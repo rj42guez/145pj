@@ -94,7 +94,7 @@ while i < len(pyld):
 	t2 = time.time()
 	Tproc = t2 - t1
 	if first == 1:
-		payloadSize = math.ceil(Tproc / (95-Tproc) * len(pyld)-1)
+		payloadSize = math.ceil(Tproc / (95-Tproc) * (len(pyld)-1))
 		print("\nComputed initial processing time: ", Tproc)
 		print("Computed initial payload size: ", payloadSize, "\n")
 
