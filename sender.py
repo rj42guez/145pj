@@ -60,9 +60,9 @@ t1 = 0
 t2 = 0
 payloadSize = 1
 i = 0
+Tproc = 0
 
 while i < len(pyld):
-
 	# Size of remaining payload is greater than max payload size
 	if len(pyld) - i > int(payloadSize):
 		pyld_sub = pyld[i:i+int(payloadSize)]
@@ -86,28 +86,27 @@ while i < len(pyld):
 
 	udpSocket.sendto(M, (ipR, portR))
 
+	if first == 0:
+                i += int(payloadSize)
+
 	t1 = time.time()
 
 	data, addr = udpSocket.recvfrom(1024)
 
 	# Compute for processing time and estimated payload size
 	t2 = time.time()
-	Tproc = t2 - t1
+	Tproc = max(t2 - t1, Tproc)
 	payloadSize = math.ceil(Tproc / (95-Tproc) * (len(pyld)-1))
 	if first == 1:
 		print("\nComputed initial processing time: ", Tproc)
 		print("Computed initial payload size: ", payloadSize, "\n")
+		i += 1
+		first = 0
 
 	# Print acknowledgment for most recently sent packet
 	print(Tproc, " -- Acknowledg. for last packet sent: ", data.decode())
 
 	seq += 1
-
-	if first == 0:
-		i += int(payloadSize)
-	else:
-		i += 1
-		first = 0
 
 	if z == 1:
 		print("The payload is sent.")
