@@ -43,7 +43,6 @@ udpSocket.sendto(M, (ipR, portR))
 data, addr = udpSocket.recvfrom(1024)
 
 # Get transaction number
-
 transID = data.decode()
 
 print("Transaction Number: ", transID)
@@ -100,7 +99,6 @@ while i < len(pyld):
 		print("Computed payload size: ", payloadSize, "\n")
 
 	# Print acknowledgment for most recently sent packet
-
 	print(Tproc, " -- Acknowledg. for last packet sent: ", data.decode())
 
 	seq += 1
