@@ -1,6 +1,7 @@
 import socket
 import sys
 import time
+import math
 
 def encodeMessage(m):
     M = m.encode()
@@ -93,10 +94,10 @@ while i < len(pyld):
 	# Compute for processing time and estimated payload size
 	t2 = time.time()
 	Tproc = t2 - t1
+	payloadSize = math.ceil(Tproc / (95-Tproc) * (len(pyld)-1))
 	if first == 1:
-		print("\nComputed processing time: ", Tproc)
-		payloadSize = Tproc / (95-Tproc) * (len(pyld)-1)
-		print("Computed payload size: ", payloadSize, "\n")
+		print("\nComputed initial processing time: ", Tproc)
+		print("Computed initial payload size: ", payloadSize, "\n")
 
 	# Print acknowledgment for most recently sent packet
 	print(Tproc, " -- Acknowledg. for last packet sent: ", data.decode())
