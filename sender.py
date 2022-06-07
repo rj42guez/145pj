@@ -83,26 +83,25 @@ while i < len(pyld):
 	packet = 'ID{}SN{}TXN{}LAST{}{}'.format(w, x, y, z, pyld_sub)
 
 	M = encodeMessage(packet)
-	print(seq+1, "-Packet to send: ", M)
+	print(seq+1, "--- Packet to send: ", M)
 
 	udpSocket.sendto(M, (ipR, portR))
 
-	if first == 1:
-		t1 = time.time()
+	t1 = time.time()
 
 	data, addr = udpSocket.recvfrom(1024)
 
 	# Compute for processing time and estimated payload size
+	t2 = time.time()
+	Tproc = t2 - t1
 	if first == 1:
-		t2 = time.time()
-		Tproc = t2 - t1
 		print("\nComputed processing time: ", Tproc)
-		payloadSize = Tproc / (100-Tproc) * (len(pyld)-1)
+		payloadSize = Tproc / (95-Tproc) * (len(pyld)-1)
 		print("Computed payload size: ", payloadSize, "\n")
 
 	# Print acknowledgment for most recently sent packet
 	if len(data) > 0:
-		print("Acknowledg. for last packet sent: ", data.decode())
+		print(Tproc, " -- Acknowledg. for last packet sent: ", data.decode())
 
 	seq += 1
 
