@@ -1,7 +1,6 @@
 import socket
 import sys
-import time
-import math
+import time, math
 
 def encodeMessage(m):
     M = m.encode()
